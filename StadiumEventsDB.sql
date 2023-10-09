@@ -2,7 +2,6 @@ DROP DATABASE IF EXISTS StadiumEventsDB;
 CREATE DATABASE StadiumEventsDB;
 USE StadiumEventsDB;
 
-
 create table if not exists auditorio
 (
     id        int auto_increment
@@ -15,12 +14,11 @@ create table if not exists auditorio
 
 create table if not exists evento
 (
-    id             int auto_increment
+    id        int auto_increment
         primary key,
-    evento         varchar(200)  not null,
-    fecha          date          not null,
-    capacidad      int           null,
-    id_evento_zona int default 1 null
+    evento    varchar(200) not null,
+    fecha     date         not null,
+    capacidad int          null
 )
     collate = utf8mb4_unicode_ci;
 
@@ -145,38 +143,6 @@ create table if not exists asientos
 )
     collate = utf8mb4_unicode_ci;
 
-create table if not exists boleto
-(
-    id                int auto_increment
-        primary key,
-    fecha             datetime   not null,
-    id_evento_formato int        not null,
-    id_asiento        int        not null,
-    estado            tinyint(1) not null,
-    constraint boleto_asiento_id_evento_fk
-        foreign key (id_asiento) references asientos (id),
-    constraint boleto_evento_id_evento_fk
-        foreign key (id_evento_formato) references evento (id)
-)
-    collate = utf8mb4_unicode_ci;
-
-create table if not exists reservas
-(
-    id         int auto_increment
-        primary key,
-    dui        int               not null,
-    telefono   varchar(10)       not null,
-    estado     tinyint default 1 not null,
-    leido      tinyint           not null,
-    id_usuario int               null,
-    id_boleto  int               not null,
-    constraint reservas_boletos_id_boleto_fk
-        foreign key (id_boleto) references boleto (id),
-    constraint reservas_usuarios_id_usuario_fk
-        foreign key (id_usuario) references usuarios (id)
-)
-    collate = utf8mb4_unicode_ci;
-
 create table if not exists zona_formato
 (
     id         int auto_increment
@@ -201,6 +167,41 @@ create table if not exists evento_zona
         foreign key (id_evento) references evento (id),
     constraint evento_formato_id_zona_formato_fk
         foreign key (id_zona_formato) references zona_formato (id)
+)
+    collate = utf8mb4_unicode_ci;
+
+create table if not exists boleto
+(
+    id             int auto_increment
+        primary key,
+    fecha          datetime   not null,
+    id_evento_zona int        not null,
+    id_asiento     int        not null,
+    estado         tinyint(1) not null,
+    constraint boleto_asiento_id_evento_fk
+        foreign key (id_asiento) references asientos (id),
+    constraint boleto_evento_zona_id_evento_fk
+        foreign key (id_evento_zona) references evento_zona (id)
+)
+    collate = utf8mb4_unicode_ci;
+
+create index boleto_evento_id_evento_fk
+    on boleto (id_evento_zona);
+
+create table if not exists reservas
+(
+    id         int auto_increment
+        primary key,
+    dui        int               not null,
+    telefono   varchar(10)       not null,
+    estado     tinyint default 1 not null,
+    leido      tinyint           not null,
+    id_usuario int               null,
+    id_boleto  int               not null,
+    constraint reservas_boletos_id_boleto_fk
+        foreign key (id_boleto) references boleto (id),
+    constraint reservas_usuarios_id_usuario_fk
+        foreign key (id_usuario) references usuarios (id)
 )
     collate = utf8mb4_unicode_ci;
 
