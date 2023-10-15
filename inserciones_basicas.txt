@@ -1,0 +1,23 @@
+INSERT INTO `escenario` (`id`, `nombre`, `capacidad`, `ubicacion`) VALUES
+(1, 'MULTIEVENTOS POMA', 600, 'CENTRO DE SAN SALVADOR');
+
+
+INSERT INTO `zonas` (`id`, `nombre`, `capacidad`, `ubicacion`) VALUES
+(1, 'VIP', '100', 'Zona Este'),
+(2, 'Platinum', '100', 'Zona Oeste'),
+(3, 'Plata 1', '150', 'Zona Norte'),
+(4, 'Plata 2', '150', 'Zona Sur');
+
+INSERT INTO `formato` (`id`, `nombre`, `descripcion`, `id_escenario`) VALUES
+(1, 'CONCIERTO', 'Se hbilita parte del escenario', 1),
+(2, 'SINFONICA', 'Se habilita parte del escenario', 1),
+(3, 'PARTIDO', 'Se habilita toda la localidad', 1);
+
+INSERT INTO `zona_formato` (`id`, `id_zona`, `id_formato`) VALUES
+(1, 1, 1),
+(2, 2, 1),
+(3, 3, 1),
+(4, 1, 2),
+(5, 2, 2),
+(6, 3, 2),
+(7, 4, 2);
